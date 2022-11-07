@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+               http://www.liquibase.org/xml/ns/dbchangelog
+               http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+<changeSet id="create first structure" author="Maestro">
+
+    <createTable tableName="product_type">
+        <column name="id" type="bigint">
+            <constraints primaryKey="true" primaryKeyName="product_type_pkey" />
+        </column>
+        <column name="type_name" type="varchar(150)">
+            <constraints nullable="false" />
+        </column>
+    </createTable>
+    <addAutoIncrement tableName="product_type" columnName="id" columnDataType="bigint" startWith="1" incrementBy="1" />
+
+    <createTable tableName="product">
+        <column name="id" type="bigint">
+            <constraints primaryKey="true" primaryKeyName="product_pkey" />
+        </column>
+        <column name="product_name" type="varchar(150)">
+            <constraints nullable="false" />
+        </column>
+        <column name="count" type="integer"/>
+        <column name="description" type="varchar(255)"/>
+        <column name="id_type" type="bigint">
+            <constraints nullable="false" />
+        </column>
+    </createTable>
+    <addAutoIncrement tableName="product" columnName="id" columnDataType="bigint" startWith="1" incrementBy="1" />
+    <addForeignKeyConstraint baseTableName="product" baseColumnNames="id_type" constraintName="product_product_type_fk" referencedTableName="product_type" referencedColumnNames="id" />
+
+    <createTable tableName="availability">
+        <column name="id" type="bigint">
+            <constraints primaryKey="true" primaryKeyName="availability_pkey" />
+        </column>
+        <column name="actual_quantity" type="integer">
+            <constraints nullable="false" />
+        </column>
+    </createTable>
+    <addForeignKeyConstraint baseTableName="availability" baseColumnNames="id" constraintName="availability_product_fk" referencedTableName="product" referencedColumnNames="id" />
+
+    <createTable tableName="storage">
+        <column name="id" type="bigint">
+            <constraints primaryKey="true" primaryKeyName="storage_pkey" />
+        </column>
+        <column name="left_count" type="integer">
+            <constraints nullable="false" />
+        </column>
+        <column name="date_expiration" type="date"/>
+        <column name="date_manufacture" type="date"/>
+        <column name="id_product" type="bigint">
+            <constraints nullable="false" />
+        </column>
+    </createTable>
+    <addAutoIncrement tableName="storage" columnName="id" columnDataType="bigint" startWith="1" incrementBy="1" />
+    <addForeignKeyConstraint baseTableName="storage" baseColumnNames="id_product" constraintName="storage_product_fk" referencedTableName="product" referencedColumnNames="id" />
+
+    <createTable tableName="arrival_product">
+        <column name="id" type="bigint">
+            <constraints primaryKey="true" primaryKeyName="arrival_product_pkey" />
+        </column>
+        <column name="count" type="integer">
+            <constraints nullable="false" />
+        </column>
+        <column name="date_arrival" type="date">
+            <constraints nullable="false" />
+        </column>
+        <column name="id_product" type="bigint">
+            <constraints nullable="false" />
+        </column>
+    </createTable>
+    <addAutoIncrement tableName="arrival_product" columnName="id" columnDataType="bigint" startWith="1" incrementBy="1" />
+    <addForeignKeyConstraint baseTableName="arrival_product" baseColumnNames="id_product" constraintName="arrival_product_storage_fk" referencedTableName="storage" referencedColumnNames="id" />
+
+    <createTable tableName="consumption_product">
+        <column name="id" type="bigint">
+            <constraints primaryKey="true" primaryKeyName="consumption_product_pkey" />
+        </column>
+        <column name="count" type="integer">
+            <constraints nullable="false" />
+        </column>
+        <column name="date_consumption" type="date">
+            <constraints nullable="false" />
+        </column>
+        <column name="id_product" type="bigint">
+            <constraints nullable="false" />
+        </column>
+    </createTable>
+    <addAutoIncrement tableName="consumption_product" columnName="id" columnDataType="bigint" startWith="1" incrementBy="1" />
+    <addForeignKeyConstraint baseTableName="consumption_product" baseColumnNames="id_product" constraintName="consumption_product_storage_fk" referencedTableName="storage" referencedColumnNames="id" />
+
+</changeSet>
+
+</databaseChangeLog>
