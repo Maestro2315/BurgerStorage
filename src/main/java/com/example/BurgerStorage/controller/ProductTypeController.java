@@ -17,7 +17,7 @@ public class ProductTypeController {
     @GetMapping("/getAllProductTypes")
     public List<ProductTypeDto> getAllProductType(){return productTypeService.getAllTypes();}
 
-    @PostMapping("/createProductType")
+    @PostMapping(value = "/createProductType", consumes = "application/json")
     public ProductTypeDto createProductType(@RequestBody ProductTypeDto productTypeDto){
         return productTypeService.addProductType(productTypeDto);
     }

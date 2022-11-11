@@ -26,7 +26,6 @@ public class ProductTypeService {
 
     public ProductTypeDto addProductType(ProductTypeDto productTypeDto){
         ProductType productType = productTypeDto.toProductType();
-
         productTypeRepository.save(productType);
         return productTypeDto;
     }
